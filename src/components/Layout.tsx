@@ -7,6 +7,7 @@ import { Menu, X } from 'lucide-react';
 import ChatList from '@/components/ChatList';
 import ChatContainer from '@/components/ChatContainer';
 import ThemeSelector from '@/components/ThemeSelector';
+import UserProfile from '@/components/UserProfile';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const Layout: React.FC = () => {
@@ -17,13 +18,17 @@ const Layout: React.FC = () => {
     <div className="flex h-screen overflow-hidden bg-background/50 backdrop-blur-sm">
       {/* Desktop Sidebar */}
       {!isMobile && (
-        <div className="hidden md:block w-64 h-full border-r border-border bg-card/50 backdrop-blur-sm">
+        <div className="hidden md:flex md:flex-col w-64 h-full border-r border-border bg-card/50 backdrop-blur-sm">
           <div className="flex items-center justify-between p-4">
             <h1 className="font-bold text-lg">QuantAlex Chat</h1>
             <ThemeSelector />
           </div>
           <Separator />
-          <ChatList />
+          <UserProfile />
+          <Separator />
+          <div className="flex-1 overflow-auto">
+            <ChatList />
+          </div>
         </div>
       )}
       
@@ -47,7 +52,11 @@ const Layout: React.FC = () => {
               </Button>
             </div>
             <Separator />
-            <ChatList />
+            <UserProfile />
+            <Separator />
+            <div className="flex-1 overflow-auto">
+              <ChatList />
+            </div>
           </SheetContent>
         </Sheet>
       )}
