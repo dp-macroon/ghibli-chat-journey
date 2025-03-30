@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,21 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				ghibli: {
+					blue: "#8ecdf9",
+					green: "#94d2bd",
+					teal: "#c9e8de",
+					pink: "#f28fad",
+					yellow: "#f9dc5c",
+					orange: "#ffad69",
+					red: "#e76f51",
+					purple: "#cdb4db",
+					forestGreen: "#2a9d8f",
+					skyBlue: "#a8dadc",
+					sunset: "#f4a261",
+					midnight: "#264653",
+					cloud: "#f8f9fa"
 				}
 			},
 			borderRadius: {
@@ -84,11 +100,20 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'float': {
+					'0%, 100%': { transform: 'translateY(0)' },
+					'50%': { transform: 'translateY(-10px)' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'float': 'float 6s ease-in-out infinite'
+			},
+			backgroundImage: {
+				'ghibli-gradient': 'linear-gradient(to bottom, #a8dadc, #c9e8de)',
+				'ghibli-sunset': 'linear-gradient(to right, #f9dc5c, #f4a261, #e76f51)'
 			}
 		}
 	},
