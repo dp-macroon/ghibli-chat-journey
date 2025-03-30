@@ -19,7 +19,7 @@ const Layout: React.FC = () => {
       {!isMobile && (
         <div className="hidden md:block w-64 h-full border-r border-border bg-card/50 backdrop-blur-sm">
           <div className="flex items-center justify-between p-4">
-            <h1 className="font-bold text-lg">Ghibli Chat</h1>
+            <h1 className="font-bold text-lg">QuantAlex Chat</h1>
             <ThemeSelector />
           </div>
           <Separator />
@@ -37,7 +37,7 @@ const Layout: React.FC = () => {
           </SheetTrigger>
           <SheetContent side="left" className="p-0 w-64">
             <div className="flex items-center justify-between p-4">
-              <h1 className="font-bold text-lg">Ghibli Chat</h1>
+              <h1 className="font-bold text-lg">QuantAlex Chat</h1>
               <Button 
                 variant="ghost" 
                 size="icon" 
@@ -57,7 +57,7 @@ const Layout: React.FC = () => {
         {/* Mobile Header */}
         {isMobile && (
           <div className="flex items-center justify-center p-4 border-b border-border relative">
-            <h1 className="font-bold text-lg">Ghibli Chat</h1>
+            <h1 className="font-bold text-lg">QuantAlex Chat</h1>
             <div className="absolute right-4">
               <ThemeSelector />
             </div>

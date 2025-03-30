@@ -8,8 +8,8 @@ const Index = () => {
   return (
     <>
       <Head 
-        title="Ghibli Chat - A Magical AI Experience"
-        description="Chat with the spirit of Studio Ghibli in this magical AI experience"
+        title="QuantAlex Chat - A Magical AI Experience"
+        description="Chat with QuantAlex in this magical AI experience"
       />
       <ChatProvider>
         <Layout />

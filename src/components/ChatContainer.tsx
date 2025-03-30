@@ -22,7 +22,7 @@ const ChatContainer: React.FC = () => {
     return (
       <div className="flex-1 flex flex-col items-center justify-center p-4">
         <div className="max-w-md text-center space-y-4">
-          <h2 className="text-2xl font-bold text-primary">Welcome to Ghibli Chat</h2>
+          <h2 className="text-2xl font-bold text-primary">Welcome to QuantAlex Chat</h2>
           <p className="text-muted-foreground">Start a new chat to begin your adventure.</p>
         </div>
       </div>
@@ -57,7 +57,7 @@ const ChatContainer: React.FC = () => {
               </div>
               <h2 className="text-xl font-medium text-primary mb-2">How can I assist you today?</h2>
               <p className="text-muted-foreground max-w-md">
-                Ask me anything about Studio Ghibli films, characters, or any other topic you'd like to explore!
+                Ask me anything you'd like to explore!
               </p>
             </div>
           )}
