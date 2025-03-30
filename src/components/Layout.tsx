@@ -7,6 +7,8 @@ import { Menu, X } from 'lucide-react';
 import ChatList from '@/components/ChatList';
 import ChatContainer from '@/components/ChatContainer';
 import ThemeSelector from '@/components/ThemeSelector';
+import DarkModeToggle from '@/components/DarkModeToggle';
+import ChatHistoryToggle from '@/components/ChatHistoryToggle';
 import UserProfile from '@/components/UserProfile';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -21,7 +23,10 @@ const Layout: React.FC = () => {
         <div className="hidden md:flex md:flex-col w-64 h-full border-r border-border bg-card/50 backdrop-blur-sm">
           <div className="flex items-center justify-between p-4">
             <h1 className="font-bold text-lg">QuantAlex Chat</h1>
-            <ThemeSelector />
+            <div className="flex space-x-2">
+              <DarkModeToggle />
+              <ThemeSelector />
+            </div>
           </div>
           <Separator />
           <UserProfile />
@@ -67,9 +72,18 @@ const Layout: React.FC = () => {
         {isMobile && (
           <div className="flex items-center justify-center p-4 border-b border-border relative">
             <h1 className="font-bold text-lg">QuantAlex Chat</h1>
-            <div className="absolute right-4">
+            <div className="absolute right-4 flex space-x-2">
+              <ChatHistoryToggle />
+              <DarkModeToggle />
               <ThemeSelector />
             </div>
+          </div>
+        )}
+        
+        {/* Desktop Header */}
+        {!isMobile && (
+          <div className="flex items-center justify-end p-4 border-b border-border">
+            <ChatHistoryToggle />
           </div>
         )}
         

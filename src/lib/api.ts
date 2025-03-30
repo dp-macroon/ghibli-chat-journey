@@ -1,65 +1,41 @@
 
+// This is a simple mock API for sending messages to the AI
+// In a real application, this would connect to your backend
+
 import { ChatMessage } from '@/types';
+import { toast } from 'sonner';
 
-// This is not ideal to store here, in a real app use environment variables
-const API_KEY = "AIzaSyDdW9ncBYGSpQGj4epPyRDOGvbanyYRVn4";
-const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
+// Mock delay to simulate API call
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-export async function sendMessage(messages: ChatMessage[]): Promise<string> {
-  try {
-    // Format the messages for the Gemini API
-    const formattedMessages = messages.map(msg => ({
-      role: msg.role === 'assistant' ? 'model' : 'user',
-      parts: [{ text: msg.content }]
-    }));
-
-    const response = await fetch(`${API_URL}?key=${API_KEY}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        contents: formattedMessages,
-        safetySettings: [
-          {
-            category: "HARM_CATEGORY_HATE_SPEECH",
-            threshold: "BLOCK_MEDIUM_AND_ABOVE"
-          },
-          {
-            category: "HARM_CATEGORY_DANGEROUS_CONTENT",
-            threshold: "BLOCK_MEDIUM_AND_ABOVE"
-          },
-          {
-            category: "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-            threshold: "BLOCK_MEDIUM_AND_ABOVE"
-          },
-          {
-            category: "HARM_CATEGORY_HARASSMENT",
-            threshold: "BLOCK_MEDIUM_AND_ABOVE"
-          }
-        ],
-        generationConfig: {
-          temperature: 0.7,
-          topK: 40,
-          topP: 0.95,
-          maxOutputTokens: 1024,
-        },
-      }),
-    });
-
-    const data = await response.json();
-    
-    if (data.error) {
-      throw new Error(data.error.message || 'Error from Gemini API');
-    }
-    
-    if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
-      return data.candidates[0].content.parts[0].text;
-    } else {
-      throw new Error('Invalid response structure from Gemini API');
-    }
-  } catch (error) {
-    console.error('Error calling Gemini API:', error);
-    throw new Error('Failed to get response from Gemini API');
+// Mock response generation based on temperature
+const generateResponse = (messages: ChatMessage[], temperature: number): string => {
+  const lastMessage = messages[messages.length - 1];
+  
+  if (!lastMessage || lastMessage.role !== 'user') {
+    return "I'm sorry, I couldn't understand your message.";
   }
-}
+  
+  // Simple response logic based on temperature
+  if (temperature < 0.3) {
+    return `I've analyzed your message: "${lastMessage.content}". Based on my understanding, I can provide you with a precise and factual response.`;
+  } else if (temperature < 0.7) {
+    return `Thank you for your message: "${lastMessage.content}". I'm happy to help you with that!`;
+  } else {
+    return `Oh, that's an interesting thought: "${lastMessage.content}"! That makes me wonder about all the creative possibilities we could explore together!`;
+  }
+};
+
+export const sendMessage = async (messages: ChatMessage[], temperature: number = 0.5): Promise<string> => {
+  try {
+    // Simulate API call delay
+    await delay(1000);
+    
+    // In a real app, this would be an API call to your backend
+    return generateResponse(messages, temperature);
+  } catch (error) {
+    console.error("Error sending message:", error);
+    toast.error("Failed to send message");
+    throw error;
+  }
+};

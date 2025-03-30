@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { Chat, ChatMessage } from '@/types';
@@ -11,11 +10,13 @@ interface ChatContextProps {
   currentChat: Chat | null;
   activeTheme: string;
   isLoading: boolean;
+  temperature: number;
   createNewChat: () => void;
   selectChat: (id: string) => void;
   deleteCurrentChat: () => void;
   sendUserMessage: (content: string) => Promise<void>;
   setActiveTheme: (theme: string) => void;
+  setTemperature: (temp: number) => void;
 }
 
 const ChatContext = createContext<ChatContextProps | undefined>(undefined);
@@ -25,6 +26,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   const [currentChat, setCurrentChat] = useState<Chat | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [activeTheme, setActiveTheme] = useState<string>('totoro');
+  const [temperature, setTemperature] = useState<number>(0.5);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -33,7 +35,6 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
         const savedChats = await getAllChats();
         setChats(savedChats);
         
-        // If there are no chats, create a new one
         if (savedChats.length === 0) {
           createNewChat();
         } else {
@@ -99,13 +100,11 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
       setChats(prev => prev.filter(chat => chat.id !== currentChat.id));
       
       if (chats.length > 1) {
-        // Select another chat if available
         const nextChat = chats.find(chat => chat.id !== currentChat.id);
         if (nextChat) {
           setCurrentChat(nextChat);
         }
       } else {
-        // Create a new chat if this was the last one
         createNewChat();
       }
     } catch (error) {
@@ -123,7 +122,6 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
       return;
     }
     
-    // Create a title from the first message
     const newTitle = userMessage.slice(0, 30) + (userMessage.length > 30 ? '...' : '');
     const updatedChat = { ...chat, title: newTitle };
     
@@ -147,7 +145,6 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
         timestamp: new Date().toISOString()
       };
       
-      // Update the current chat with the user message
       const updatedChat = {
         ...currentChat,
         messages: [...currentChat.messages, userMessage]
@@ -156,14 +153,12 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
       setCurrentChat(updatedChat);
       await addMessageToChat(currentChat.id, userMessage);
       
-      // Update the title if this is the first message
       await updateChatTitle(currentChat, content);
       
-      // Now get the AI response
       setIsLoading(true);
       
       try {
-        const response = await sendMessage([...currentChat.messages, userMessage]);
+        const response = await sendMessage([...currentChat.messages, userMessage], temperature);
         
         const assistantMessage: ChatMessage = {
           id: uuidv4(),
@@ -180,7 +175,6 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
         setCurrentChat(chatWithResponse);
         await addMessageToChat(currentChat.id, assistantMessage);
         
-        // Update the chats list
         setChats(prev => 
           prev.map(chat => chat.id === currentChat.id ? chatWithResponse : chat)
         );
@@ -212,11 +206,13 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
         currentChat,
         activeTheme,
         isLoading,
+        temperature,
         createNewChat,
         selectChat,
         deleteCurrentChat,
         sendUserMessage,
-        setActiveTheme
+        setActiveTheme,
+        setTemperature
       }}
     >
       {children}
